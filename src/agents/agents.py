@@ -1,14 +1,14 @@
 from langchain.agents import create_agent # rather than create_react_agent and  agent_executor
-from langchain_groq import Groq
+from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import strOutputParser
+from langchain_core.output_parsers import StrOutputParser
 from src.tools.tools import web_serach, scrape_url
 from dotenv import load_dotenv
 
 load_dotenv()
 
 # model initialization
-llm = Groq(
+llm = ChatGroq(
     model="openai/gpt-oss-20b",
     temperature=0.0,
 )
@@ -16,7 +16,7 @@ llm = Groq(
 # 1st agent ==> Search Agent
 def build_search_agent():
     return create_agent(
-        llm=llm,
+        model=llm,
         tools=[web_serach],
     )
 
@@ -24,7 +24,7 @@ def build_search_agent():
 
 def build_reader_agent():
     return create_agent(
-        llm=llm,
+        model=llm,
         tools=[scrape_url],
     )
 
@@ -48,7 +48,7 @@ Structure the report as:
 Be detailed, factual and professional."""),
 ])
 
-writer_chain= writer_prompt | llm | strOutputParser()
+writer_chain= writer_prompt | llm | StrOutputParser()
 
 # critic chain
 
@@ -75,4 +75,4 @@ One line verdict:
 ..."""),
 ])
 
-critic_chain= critic_prompt | llm | strOutputParser()
+critic_chain= critic_prompt | llm | StrOutputParser()

@@ -1,5 +1,4 @@
-from src.tools.tools import web_serach, scrape_url
+from src.pipeline.pipline import run_research_pipeline
 
-r = web_serach.invoke("What is the latest research on quantum computing?")
-
-print(r)
+topic = "the impact of AI on the jop market in 2024"
+run_research_pipeline(topic)
